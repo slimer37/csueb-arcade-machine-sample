@@ -5,7 +5,7 @@ import pygame.gfxdraw
 import pygame.transform
 import random
 
-SPRING_CONSTANT = 4
+SPRING_CONSTANT = 7
 SQRT_SPRING_CONSTANT = math.sqrt(SPRING_CONSTANT)
 
 def smooth_damp(target: float, current: float, velocity: float, deltaTime: float) -> tuple[float, float]:
@@ -51,7 +51,7 @@ screen_size = (1280, 720)
 
 center = (screen_size[0] / 2, screen_size[1] / 2)
 
-max_distance = math.sqrt(center[0]**2 + center[1]**2)
+max_distance = math.sqrt(center[0]**2 + center[1]**2) - 20
 
 circles = []
 
@@ -68,9 +68,9 @@ def generate_circles():
 
 	for i in range(100):
 		
-		distance = math.sqrt(random.uniform(5, max_distance ** 2)) # try and get more even distribution farther away w/ sqrt curve
+		distance = math.sqrt(random.uniform(0, max_distance ** 2)) # try and get more even distribution farther away w/ sqrt curve
 		position = random.uniform(0, 2 * math.pi)
-		speed = random.uniform(0.5, 2) / (2 * math.pi) # revs per sec
+		speed = random.uniform(0.5, 3) / (2 * math.pi) # revs per sec
 		radius = random.uniform(20, 80)
 		
 		color = pygame.Color(0)
