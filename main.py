@@ -58,7 +58,7 @@ def frameloop():
 	
 	if push.length() > 0: push.normalize_ip()
 	
-	push *= 50
+	push *= 300
 	
 	orbiting_circles.push_circles(push)
 	
