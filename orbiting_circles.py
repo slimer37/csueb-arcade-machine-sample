@@ -2,6 +2,7 @@ import pygame
 import math
 from pygame.math import Vector2
 import pygame.gfxdraw
+import pygame.transform
 import random
 
 class OrbitingCircle:
@@ -16,9 +17,15 @@ class OrbitingCircle:
 	def draw(self, screen: pygame.Surface, deltaTime: float):
 		self.position += self.speed * deltaTime
 		pos = self.orbit_center + Vector2(math.cos(self.position), math.sin(self.position)) * self.orbit_distance
-		pygame.gfxdraw.aacircle(screen, int(pos.x), int(pos.y), int(self.radius), self.color)
-		pygame.gfxdraw.filled_circle(screen, int(pos.x), int(pos.y), int(self.radius), self.color)
-		#pygame.draw.circle(screen, self.color, pos, self.radius)
+		
+		surf = pygame.Surface((self.radius * 2 + 2,) * 2, pygame.SRCALPHA)
+		
+		center = math.floor(self.radius)
+		r = math.floor(self.radius)
+		pygame.gfxdraw.aacircle(surf, center, center, r, self.color)
+		pygame.gfxdraw.filled_circle(surf, center, center, r, self.color)
+		
+		screen.blit(surf, surf.get_rect(center=pos))
 
 
 screen_size = (1280, 720)
