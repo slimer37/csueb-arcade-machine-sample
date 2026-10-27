@@ -47,6 +47,21 @@ def frameloop():
 	
 	screen.fill(BG_COLOR)
 	
+	keys = pygame.key.get_pressed()
+	
+	push = pygame.math.Vector2()
+	
+	if keys[pygame.K_UP]: push.y -= 1
+	if keys[pygame.K_DOWN]: push.y += 1
+	if keys[pygame.K_RIGHT]: push.x += 1
+	if keys[pygame.K_LEFT]: push.x -= 1
+	
+	if push.length() > 0: push.normalize_ip()
+	
+	push *= 50
+	
+	orbiting_circles.push_circles(push)
+	
 	orbiting_circles.draw(screen, deltaTime)
 	
 	debug_hint_text = minifont.render(f"Press F3 to {'hide' if show_debug_info else 'show'} debug info", True, FG_COLOR)
