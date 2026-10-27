@@ -1,0 +1,72 @@
+import pygame
+import pygame.joystick
+import sys
+
+pygame.init()
+
+pygame.display.set_caption("Arcade Sample")
+
+screen = pygame.display.set_mode((1280, 720))
+clock = pygame.time.Clock()
+deltaTime = 0
+
+fps_limit = 60
+
+BG_COLOR = (250,) * 3
+FG_COLOR = (25,) * 3
+
+font = pygame.font.SysFont("FreeSans", 18)
+minifont = pygame.font.SysFont("FreeSans", 10)
+
+show_debug_info = False
+
+def quit():
+	pygame.quit()
+	sys.exit()
+
+def frameloop():
+	global show_debug_info
+	
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			quit()
+			
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_ESCAPE:
+				quit()
+				
+			if event.key == pygame.K_F3:
+				show_debug_info = not show_debug_info
+	
+	screen.fill(BG_COLOR)
+	
+	debug_hint_text = minifont.render(f"Press F3 to {'hide' if show_debug_info else 'show'} debug info", True, FG_COLOR)
+	debug_hint_rect = debug_hint_text.get_rect(topleft=(5, 5))
+	screen.blit(debug_hint_text, debug_hint_rect)
+	
+	if show_debug_info:
+		debug_info_content = f"""Debug info:
+Joysticks detected: {pygame.joystick.get_count()}
+Delta time: {deltaTime:.3f}
+FPS: {1 / deltaTime:.1f}
+"""
+
+		y = debug_hint_rect.bottom + 5
+		for line in debug_info_content.split('\n'):
+			text_surface = font.render(line, True, FG_COLOR)
+			text_rect = text_surface.get_rect(topleft=(5, y))
+			screen.blit(text_surface, text_rect)
+			y += text_rect.height + 5
+
+def main():	
+	print("By Alfred Roy Manongsong @ CSUEB 2026")
+	
+	global deltaTime
+	
+	while True:
+		frameloop()
+		pygame.display.flip()
+		deltaTime = clock.tick(fps_limit) / 1000
+
+if __name__ == "__main__":
+	main()
