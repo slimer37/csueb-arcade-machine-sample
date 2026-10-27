@@ -1,5 +1,6 @@
 import pygame
 import pygame.joystick
+import orbiting_circles
 import sys
 
 pygame.init()
@@ -23,6 +24,9 @@ show_debug_info = False
 def quit():
 	pygame.quit()
 	sys.exit()
+	
+def setup():
+	orbiting_circles.generate_circles()
 
 def frameloop():
 	global show_debug_info
@@ -37,8 +41,13 @@ def frameloop():
 				
 			if event.key == pygame.K_F3:
 				show_debug_info = not show_debug_info
+				
+			if event.key == pygame.K_SPACE:
+				orbiting_circles.generate_circles()
 	
 	screen.fill(BG_COLOR)
+	
+	orbiting_circles.draw(screen, deltaTime)
 	
 	debug_hint_text = minifont.render(f"Press F3 to {'hide' if show_debug_info else 'show'} debug info", True, FG_COLOR)
 	debug_hint_rect = debug_hint_text.get_rect(topleft=(5, 5))
@@ -62,6 +71,8 @@ def main():
 	print("By Alfred Roy Manongsong @ CSUEB 2026")
 	
 	global deltaTime
+	
+	setup()
 	
 	while True:
 		frameloop()
