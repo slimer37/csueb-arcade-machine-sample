@@ -71,6 +71,8 @@ def frameloop():
 	
 	orbiting_circles.draw(screen, deltaTime)
 	
+	show_control_hint(screen, "Press spacebar to regenerate circles", keys[pygame.K_SPACE], topright=(1280 - 5, 5))
+	
 	debug_hint_rect = show_control_hint(screen, f"Press F3 to {'hide' if show_debug_info else 'show'} debug info", keys[pygame.K_F3], topleft=(5, 5))
 	
 	if show_debug_info:
