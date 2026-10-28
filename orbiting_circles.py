@@ -21,6 +21,31 @@ def smooth_damp_v2(target: Vector2, current: Vector2, velocity: Vector2, deltaTi
 	pos_x, vel_x = smooth_damp(target.x, current.x, velocity.x, deltaTime)
 	pos_y, vel_y = smooth_damp(target.y, current.y, velocity.y, deltaTime)
 	return (Vector2(pos_x, pos_y), Vector2(vel_x, vel_y))
+	
+def draw_circle(screen: pygame.Surface, position: Vector2, radius: float, color: pygame.Color, shadow: bool):
+	def aa_circle(surf: pygame.Surface, pos: Vector2, r: float, color: pygame.Color):
+		px = int(pos.x)
+		py = int(pos.y)
+		r = int(radius)
+		pygame.gfxdraw.aacircle(surf, px, py, r, color)
+		pygame.gfxdraw.filled_circle(surf, px, py, r, color)
+	
+	margin = 1
+	shadow_offset = Vector2(10, 10)
+	shadow_color = (0, 0, 0, 50)
+	dimension = (radius + margin) * 2
+	
+	if shadow: dimension += 10 * 2
+
+	surf = pygame.Surface((dimension,) * 2, pygame.SRCALPHA)
+	center = Vector2(surf.get_size()) / 2
+	r = math.floor(radius)
+	
+	if shadow: aa_circle(surf, center + shadow_offset, r, shadow_color)
+	
+	aa_circle(surf, center, r, color)
+	
+	screen.blit(surf, surf.get_rect(center=position))
 
 class OrbitingCircle:
 	def __init__(self, orbit_center: Vector2, orbit_distance: float, position: float, speed: float, radius: float, color: pygame.Color, reactivity: float):
@@ -38,20 +63,14 @@ class OrbitingCircle:
 		
 		pos += smooth_push_offset * self.reactivity
 		
-		surf = pygame.Surface((self.radius * 2 + 2,) * 2, pygame.SRCALPHA)
-		
-		center = math.floor(self.radius)
-		r = math.floor(self.radius)
-		pygame.gfxdraw.aacircle(surf, center, center, r, self.color)
-		pygame.gfxdraw.filled_circle(surf, center, center, r, self.color)
-		
-		screen.blit(surf, surf.get_rect(center=pos))
+		draw_circle(screen, pos, self.radius, self.color, False)
 
 screen_size = (1280, 720)
 
 center = (screen_size[0] / 2, screen_size[1] / 2)
 
 max_distance = math.sqrt(center[0]**2 + center[1]**2) - 20
+max_distance *= 0.9
 
 circles = []
 
