@@ -17,9 +17,16 @@ BG_COLOR = (250,) * 3
 FG_COLOR = (25,) * 3
 
 font = pygame.font.SysFont("FreeSans", 18)
-minifont = pygame.font.SysFont("FreeSans", 10)
+hint_font = pygame.font.SysFont("FreeSans", 10)
 
 show_debug_info = False
+
+def show_control_hint(screen: pygame.Surface, text: str, disabled: bool, **placement_flags) -> pygame.Rect:
+	control_hint_text = hint_font.render(text, True, FG_COLOR)
+	if disabled: control_hint_text.set_alpha(128)
+	control_hint_rect = control_hint_text.get_rect(**placement_flags)
+	screen.blit(control_hint_text, control_hint_rect)
+	return control_hint_rect
 
 def quit():
 	pygame.quit()
@@ -64,9 +71,7 @@ def frameloop():
 	
 	orbiting_circles.draw(screen, deltaTime)
 	
-	debug_hint_text = minifont.render(f"Press F3 to {'hide' if show_debug_info else 'show'} debug info", True, FG_COLOR)
-	debug_hint_rect = debug_hint_text.get_rect(topleft=(5, 5))
-	screen.blit(debug_hint_text, debug_hint_rect)
+	debug_hint_rect = show_control_hint(screen, f"Press F3 to {'hide' if show_debug_info else 'show'} debug info", keys[pygame.K_F3], topleft=(5, 5))
 	
 	if show_debug_info:
 		debug_info_content = f"""Debug info:
