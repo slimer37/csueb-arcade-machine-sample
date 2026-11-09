@@ -7,7 +7,7 @@ pygame.init()
 
 pygame.display.set_caption("Arcade Sample")
 
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 clock = pygame.time.Clock()
 deltaTime = 0
 
@@ -71,7 +71,7 @@ def frameloop():
 	
 	orbiting_circles.draw(screen, deltaTime)
 	
-	show_control_hint(screen, "Press spacebar to regenerate circles", keys[pygame.K_SPACE], topright=(1280 - 5, 5))
+	show_control_hint(screen, "Press spacebar to regenerate circles", keys[pygame.K_SPACE], topright=(1920 - 5, 5))
 	
 	debug_hint_rect = show_control_hint(screen, f"Press F3 to {'hide' if show_debug_info else 'show'} debug info", keys[pygame.K_F3], topleft=(5, 5))
 	

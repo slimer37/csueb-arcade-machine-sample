@@ -68,7 +68,7 @@ class OrbitingCircle:
 		
 		draw_circle(screen, pos, self.radius, self.color, False)
 
-screen_size = (1280, 720)
+screen_size = (1920, 1080)
 
 center = (screen_size[0] / 2, screen_size[1] / 2)
 
